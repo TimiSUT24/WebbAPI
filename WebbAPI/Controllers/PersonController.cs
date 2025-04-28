@@ -29,7 +29,7 @@ namespace WebbAPI.Controllers
                     s.Lastname,
                     s.Phone,
                     
-                })
+                })              
                 .ToListAsync();
 
             if (persons == null) return NotFound();
@@ -50,7 +50,7 @@ namespace WebbAPI.Controllers
                         pi.Interest,
                     }).ToList()
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(); //Returns the first match 
 
             if (person == null) return NotFound();
 
@@ -67,7 +67,7 @@ namespace WebbAPI.Controllers
                 {
                     p.Firstname,
                     PersonInterest = p.PersonInterests.Where(pi => pi.Links != null && pi.Links.Count != 0)
-                    .SelectMany(pi => pi.Links)
+                    .SelectMany(pi => pi.Links) //turns into a big list not a list of lists
                     .Where(l => !string.IsNullOrEmpty(l.Link))
                     .ToList(),
                    
@@ -78,7 +78,7 @@ namespace WebbAPI.Controllers
             return Ok(person); 
         }
 
-        [HttpPut("JoinInterestToPerson", Name = "AddInterest")]
+        [HttpPut("Add-Interest-To-Person", Name = "AddInterest")]
 
         public async Task<ActionResult<Person>> AddInterestToPerson(string firstname, string interest, string description)
         {
@@ -115,7 +115,7 @@ namespace WebbAPI.Controllers
             return Ok($" Id: {interests.Id}\n Interest: {interests.Interest}\n Description: {interests.Description}"); 
         }
 
-        [HttpPost("NewLinks", Name = "NewLinkForPerson")]
+        [HttpPost("New-Links", Name = "NewLinkForPerson")]
 
         public async Task<ActionResult<Person>> AddLinkForPerson( string firstname, string interest, string url)
         {
